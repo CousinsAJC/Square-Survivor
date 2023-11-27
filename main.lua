@@ -24,6 +24,8 @@ function love.update(dt)
     cam:lookAt(p1.x, p1.y)
     p1.update(p1, dt)
 
+    mapUpdate(dt)
+
     world:update(dt)
     p1.x = p1.collider:getX() - 48
     p1.y = p1.collider:getY() - 48

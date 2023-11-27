@@ -32,31 +32,6 @@ function Player.update(self, dt)
     self.centerX = self.x + (24 * self.scaleX)
     self.centerY = self.y + (24 * self.scaleY)
     self.anim:update(dt)
-
-    local w = love.graphics.getWidth()
-    local h = love.graphics.getHeight()
-
-    local mapW = testMap.width * testMap.tilewidth
-    local mapH = testMap.height * testMap.tileheight
-
-
-    if cam.x < w/2 then
-        cam.x = w/2
-    end
-    if cam.x > (mapW - w/2) then
-        cam.x = (mapW - w/2)
-    end
-
-    if cam.y < h/2 then
-        cam.y = h/2
-    end
-    if cam.y > (mapH - h/2) then
-        cam.y = (mapH - h/2)
-    end
-
-
-
-
 end
 
 
@@ -67,19 +42,19 @@ end
 
 function Player.move(self, dt)
     local isMoving = false
-    --local pace = self.speed * dt
+    local pace = 1
 
     local vx = 0
     local vy = 0
 
     --make diagonal movement feel more in line with vert/horiz movement
     --if (love.keyboard.isDown("a") or love.keyboard.isDown("d")) and (love.keyboard.isDown("w") or love.keyboard.isDown("s")) then
-        --pace = pace * 0.85
+        --pace = 0.85
     --end
 
     --accept input, move player, play animation
     if love.keyboard.isDown("a") then
-        self.x = self.x - self.speed
+        self.x = self.x - (self.speed * dt)
         vx = self.speed * -1
         self.facing = "left"
         self.anim = self.animations.left
@@ -87,7 +62,7 @@ function Player.move(self, dt)
     end
 
     if love.keyboard.isDown("w") then
-        self.y = self.y - self.speed
+        self.y = self.y - (self.speed * dt)
         vy = self.speed * -1
         isMoving = true
         if self.facing == "left" then
@@ -99,7 +74,7 @@ function Player.move(self, dt)
     end
 
     if love.keyboard.isDown("s") then
-        self.y = self.y + self.speed
+        self.y = self.y + (self.speed * dt)
         vy = self.speed
         isMoving = true
         if self.facing == "left" then
@@ -111,7 +86,7 @@ function Player.move(self, dt)
     end
 
     if love.keyboard.isDown("d") then
-        self.x = self.x + self.speed
+        self.x = self.x + (self.speed * dt)
         vx = self.speed
         self.facing = "right"
         self.anim = self.animations.right
@@ -121,6 +96,12 @@ function Player.move(self, dt)
     if isMoving == false then
         self.anim:gotoFrame(2)
     end
+
+    --local length = math.sqrt(vx^2+vy^2)
+    --vx,vy = vx/length, vy/length
+
+    --self.x = self.x + vx * self.speed * dt
+    --self.y = self.y + vy * self.speed * dt
 
     self.collider:setLinearVelocity(vx, vy)
 end

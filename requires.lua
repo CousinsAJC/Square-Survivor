@@ -5,3 +5,4 @@ camera = require "libraries/camera"
 sti = require "libraries/sti"
 
 require "player"
+require "maps/map"
